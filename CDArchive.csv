@@ -1,0 +1,12 @@
+Title;Author;Section;X;Y;BarCode;Description;OnLoan
+Business History 2015;Management;B;1;57;73500273;Business History - tax records, events and achievements in 2015;false
+Business History 2016;Management;B;1;58;38592695;Business History - tax records, events and achievements in 2016;false
+Business History 2017;Management;B;1;59;31915757;Business History - tax records, events and achievements in 2017;false
+Client A's Project;Dev Team;D;4;7;55704653;Client A's project files and copyright material.;false
+Client A's Testing Records;Testing Team;T;2;18;59521232;Client A's project test plan, test cases and associated emails;false
+Web Site 2017;Web Team;W;1;27;22617788;Our business' 2017 web site development and graphics files;false
+HRM Records 2017;HR Team;B;1;60;92773618;Our business' 2017 human resource management records;false
+Marketing Records 2017;Marketing;B;1;61;42474010;Our business' 2017 marketing and sales records;false
+Client B's Project;Dev Team;D;4;15;52748955;Client B's project files and copyright material;false
+Client A's Testing Records;Testing Team;T;2;32;91559478;Client B's project test plan, test cases and associated emails;false
+Busn History 2018;Management;B;1;64;70025936;Business History - tax records, events and achievements in 2018;false
