@@ -2,6 +2,9 @@ package views.Main;
 
 import structures.data.CD;
 import structures.lists.DoublyLinkedList;
+import structures.sockets.Client;
+import structures.sockets.interfaces.Listener;
+import structures.sockets.interfaces.Sender;
 import structures.sorting.Bubble;
 import structures.sorting.Insertion;
 import structures.sorting.Quick;
@@ -16,6 +19,12 @@ import java.util.List;
 import java.util.HashMap;
 
 public class MainEvents {
+    Client client;
+    boolean processActive = false;
+
+    /**
+     * Creates a new Event Manager for Main Display
+     */
     public MainEvents() {
     }
 
@@ -25,6 +34,11 @@ public class MainEvents {
 
     // Filter without Custom Row Sorter with Filter active
 
+    /**
+     * Search for a value
+     * @param fileManager File Manager to look for a value
+     * @param term Term to search for
+     */
     void Search(FileManager fileManager, String term) {
         DoublyLinkedList cds = fileManager.getCDs();
         DoublyLinkedList.Node focused = cds.get(0);
@@ -62,6 +76,9 @@ public class MainEvents {
 
     // Sort without using Custom Row Sorter
 
+    /**
+     * Sort the table by Title
+     */
     void ByTitle() {
         cdTree = new BinaryTree();
         List cds = new ArrayList<CD>();
@@ -89,6 +106,9 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Sort the table by Author
+     */
     void ByAuthor() {
         List cds = new ArrayList<CD>();
         int rowCount = tblCDs.getRowCount();
@@ -114,6 +134,9 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Sort the table by Barcode
+     */
     void ByBarcode() {
         List cds = new ArrayList<CD>();
         int rowCount = tblCDs.getRowCount();
@@ -139,14 +162,26 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Save the table component
+     * @param table
+     */
     void SaveTableComponent(JTable table) {
         this.tblCDs = table;
     }
 
+    /**
+     * Return the table component
+     * @return
+     */
     JTable GetTableComponent() {
         return this.tblCDs;
     }
 
+    /**
+     * Clear the table provided
+     * @param table
+     */
     void ClearTable(JTable table) {
         DefaultTableModel dm = (DefaultTableModel) table.getModel();
 
@@ -166,14 +201,23 @@ public class MainEvents {
     private JList processHistory = new JList();
     private ArrayList<String> processHistoryData = new ArrayList();
 
+    /**
+     * Display the process log
+     */
     void ProcessLog() {
-        processHistory.setListData(new Object[0]);
+        processHistory.setListData(processHistoryData.toArray());
+        processActive = true;
     }
 
+    /**
+     * Display the preorder binary tree
+     */
     void PreOrder() {
         if (cdTree.preOrder().size() > 0) {
-            processHistoryData = ConvertNodeToStringList(cdTree.preOrder());
-            processHistory.setListData(processHistoryData.toArray());
+            ArrayList<String> processData = new ArrayList<>();
+            processData = ConvertNodeToStringList(cdTree.preOrder());
+            processHistory.setListData(processData.toArray());
+            processActive = false;
         } else {
             JOptionPane.showMessageDialog(
                     null,
@@ -183,10 +227,15 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Display the inorder binary tree
+     */
     void InOrder() {
         if (cdTree.inOrder().size() > 0) {
-            processHistoryData = ConvertNodeToStringList(cdTree.inOrder());
-            processHistory.setListData(processHistoryData.toArray());
+            ArrayList<String> processData = new ArrayList<>();
+            processData = ConvertNodeToStringList(cdTree.inOrder());
+            processHistory.setListData(processData.toArray());
+            processActive = false;
         } else {
             JOptionPane.showMessageDialog(
                     null,
@@ -196,10 +245,15 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Display the postorder binary tree
+     */
     void PostOrder() {
         if (cdTree.postOrder().size() > 0) {
-            processHistoryData = ConvertNodeToStringList(cdTree.postOrder());
-            processHistory.setListData(processHistoryData.toArray());
+            ArrayList<String> processData = new ArrayList<>();
+            processData = ConvertNodeToStringList(cdTree.postOrder());
+            processHistory.setListData(processData.toArray());
+            processActive = false;
         } else {
             JOptionPane.showMessageDialog(
                     null,
@@ -209,6 +263,9 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Display a graphical representation of the binary tree
+     */
     void Graphical() {
         if (cdTree.preOrder().size() > 0) {
             SwingUtilities.invokeLater(new Runnable() {
@@ -226,6 +283,9 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Save the binary tree in a HashMap
+     */
     void HashSave() {
         if (cdMap.size() > 0) {
             cdMap.clear();
@@ -246,15 +306,32 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Display the HashMap
+     */
     void HashDisplay() {
-        processHistoryData.clear();
-        cdMap.forEach((key, value) -> {
-            CD cd = MainEvents.StringToCD(value);
-            processHistoryData.add(cd.getBarcode() + " - " + cd.getTitle());
-        });
-        processHistory.setListData(processHistoryData.toArray());
+        if (cdMap.size() > 0) {
+            ArrayList<String> processData = new ArrayList<>();
+            cdMap.forEach((key, value) -> {
+                CD cd = MainEvents.StringToCD(value);
+                processData.add(cd.getBarcode() + " - " + cd.getTitle());
+            });
+            processHistory.setListData(processData.toArray());
+            processActive = false;
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No Hash Map Data. Have you clicked \"Save\"?",
+                    "Hash-Map",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
+    /**
+     * Convert a Node List too a String List
+     * @param nodeList
+     * @return
+     */
     ArrayList<String> ConvertNodeToStringList(List<BinaryTree.Node> nodeList) {
         ArrayList<String> strList = new ArrayList();
         for (int i = 0; i < nodeList.size(); i++) {
@@ -264,14 +341,19 @@ public class MainEvents {
         return strList;
     }
 
+    /**
+     * Save the List component
+     * @param history
+     */
     void SaveListComponent(JList history) {
         this.processHistory = history;
     }
 
-    BinaryTree<CD> GetBinaryTree() {
-        return this.cdTree;
-    }
-
+    /**
+     * Parse a CD into a String
+     * @param cd
+     * @return
+     */
     static String CDToString(CD cd) {
         return (
                 cd.getTitle() + ";" +
@@ -285,6 +367,11 @@ public class MainEvents {
         );
     }
 
+    /**
+     * Parse a CD into a String
+     * @param cd
+     * @return
+     */
     static CD StringToCD(String cd) {
         String[] lineSplit = cd.split(";");
         return new CD(
@@ -301,6 +388,10 @@ public class MainEvents {
 
     private Object[] CDDetailsComponents = new Object[0];
 
+    /**
+     * Create a new CD item
+     * @param barcodes Barcodes not to use
+     */
     void NewItem(int[] barcodes) {
         tblCDs.clearSelection();
 
@@ -314,6 +405,9 @@ public class MainEvents {
         DisplayCD(cd);
     }
 
+    /**
+     * Save a the CD item
+     */
     void SaveItem() {
         JTextField title = (JTextField) CDDetailsComponents[0];
         JTextField author = (JTextField) CDDetailsComponents[1];
@@ -345,6 +439,10 @@ public class MainEvents {
         }
     }
 
+    /**
+     * Display a CD
+     * @param cd
+     */
     void DisplayCD(CD cd) {
         JTextField title = (JTextField) CDDetailsComponents[0];
         JTextField author = (JTextField) CDDetailsComponents[1];
@@ -373,6 +471,9 @@ public class MainEvents {
         description.setCaretPosition(0);
     }
 
+    /**
+     * Clear the CD fields
+     */
     void ClearCD() {
         JTextField title = (JTextField) CDDetailsComponents[0];
         JTextField author = (JTextField) CDDetailsComponents[1];
@@ -393,6 +494,17 @@ public class MainEvents {
         onloan.setSelected(false);
     }
 
+    /**
+     * Save the CD Fields
+     * @param title
+     * @param author
+     * @param section
+     * @param xAxis
+     * @param yAxis
+     * @param barcode
+     * @param description
+     * @param onloan
+     */
     void SaveCDComponents(
             JTextField title, JTextField author,
             JTextField section, JTextField xAxis,
@@ -411,37 +523,70 @@ public class MainEvents {
 
     //region Automation
 
+    /**
+     * Retrieve Single CD
+     * @param row
+     */
     void Retrieve(int row) {
         this.SingleCDAutomation(MainEvents.ConvertRowToCD(row, tblCDs), 1);
     }
 
+    /**
+     * Remove Single CD
+     * @param row
+     */
     void Remove(int row) {
         this.SingleCDAutomation(MainEvents.ConvertRowToCD(row, tblCDs), 3);
     }
 
+    /**
+     * Return Single CD
+     * @param row
+     */
     void Return(int row) {
         this.SingleCDAutomation(MainEvents.ConvertRowToCD(row, tblCDs), 2);
     }
 
+    /**
+     * Add Single CD
+     * @param row
+     */
     void Add(int row) {
         this.SingleCDAutomation(MainEvents.ConvertRowToCD(row, tblCDs), 0);
     }
 
+    /**
+     * Random Sort Collection of CDs
+     * @param section Section the CDs exist in
+     */
     void RandomSort(String section) {
         CD[] cds = this.SectionToCDs(section, tblCDs);
         this.MultipleCDsAutomation(cds, section, 4);
     }
 
+    /**
+     * Mostly Sort Collection of CDs
+     * @param section Section the CDs exist in
+     */
     void MostlySort(String section) {
         CD[] cds = this.SectionToCDs(section, tblCDs);
         this.MultipleCDsAutomation(cds, section, 5);
     }
 
+    /**
+     * Reverse Sort Collection of CDs
+     * @param section Section the CDs exist in
+     */
     void ReverseSort(String section) {
         CD[] cds = this.SectionToCDs(section, tblCDs);
         this.MultipleCDsAutomation(cds, section, 6);
     }
 
+    /**
+     * Process a Single CD
+     * @param cd CD to process
+     * @param method Method to auto select
+     */
     void SingleCDAutomation(CD cd, int method) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -451,6 +596,12 @@ public class MainEvents {
         });
     }
 
+    /**
+     * Process a Collection of CDs
+     * @param cds CDs to process
+     * @param section Section the CDs exist in
+     * @param method Method to auto select
+     */
     void MultipleCDsAutomation(CD[] cds, String section, int method) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -462,6 +613,9 @@ public class MainEvents {
 
     //endregion
 
+    /**
+     * Exits the program
+     */
     static void Exit() {
         System.exit(0);
     }
@@ -470,11 +624,22 @@ public class MainEvents {
 
     //region Table Events
 
+    /**
+     * Displays the selected row
+     * @param row
+     * @param table
+     */
     void RowSelectionUpdate(int row, JTable table) {
         CD cd = this.ConvertRowToCD(row, table);
         this.DisplayCD(cd);
     }
 
+    /**
+     * Converts a Section into a collection of CDs
+     * @param section
+     * @param table
+     * @return
+     */
     CD[] SectionToCDs(String section, JTable table) {
         int rowCount = table.getRowCount();
         List<CD> cdsList = new ArrayList<>();
@@ -490,6 +655,37 @@ public class MainEvents {
 
     //endregion
 
+    //region Socket Events
+
+    /**
+     * Connect the client to the server
+     */
+    void Connect() {
+        client = new Client("", new Listener() {
+            @Override
+            public void ready() {
+
+            }
+
+            @Override
+            public void message(String msg, Sender sender) {
+                processHistoryData.add(msg);
+                if (processActive == true) {
+                    ProcessLog();
+                }
+            }
+        });
+    }
+
+    //endregion
+
+    /**
+     * Convert a Row into a CD
+     *
+     * @param row
+     * @param table
+     * @return
+     */
     static CD ConvertRowToCD(int row, JTable table) {
         String title = (String) table.getValueAt(row, 0);
         String author = (String) table.getValueAt(row, 1);

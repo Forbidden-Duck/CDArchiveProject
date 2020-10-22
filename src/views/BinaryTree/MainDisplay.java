@@ -1,5 +1,6 @@
 package views.BinaryTree;
 
+import structures.data.CD;
 import structures.trees.BinaryTree;
 import structures.trees.BinaryTree.Node;
 
@@ -25,15 +26,17 @@ public class MainDisplay extends JPanel {
     Graphics g;
     BinaryTree tree;
 
-
     @Override
     public void paintComponent(Graphics g) {
         this.g = g;
         this.traverseTree(tree);
         frame.repaint();
-        this.repaint();
     }
 
+    /**
+     * Create a new Barcode display
+     * @param tree
+     */
     public MainDisplay(BinaryTree tree) {
         this.tree = tree;
 
@@ -51,6 +54,13 @@ public class MainDisplay extends JPanel {
         frame.pack();
     }
 
+    /**
+     * Draw a single Node
+     * @param g Graphics component
+     * @param text Text to display
+     * @param x
+     * @param y
+     */
     private void DrawNode(Graphics g, String text, int x, int y) {
         g.drawRect(x, y, widthSize, heightSize);
         JLabel label = new JLabel(text, JLabel.CENTER);
@@ -59,6 +69,10 @@ public class MainDisplay extends JPanel {
         layout.putConstraint(SpringLayout.NORTH, label, y + 15, SpringLayout.NORTH, this);
     }
 
+    /**
+     * Start traversing a tree
+     * @param tree Tree to being traversing
+     */
     private void traverseTree(BinaryTree tree) {
         Node root = tree.getRoot();
         String v1 = root.getKey() + "";
@@ -66,8 +80,21 @@ public class MainDisplay extends JPanel {
         this.traverseTree(root, rootX, rootY);
     }
 
+    /**
+     * Start traversing a node
+     * @param focused Node to start traversing
+     * @param fX X of the node
+     * @param fY Y of the node
+     */
     private void traverseTree(Node focused, int fX, int fY) {
         if (focused != null) {
+            if (fX > this.getPreferredSize().width) {
+                this.setPreferredSize(new Dimension(fX, this.getPreferredSize().height));
+            }
+            if (fY > this.getPreferredSize().height) {
+                this.setPreferredSize(new Dimension(this.getPreferredSize().width, fY));
+            }
+
             int RowsOnScreen = (fY - 5) / 70;
             int distanceApart = 120;
             if (RowsOnScreen >= 1) {

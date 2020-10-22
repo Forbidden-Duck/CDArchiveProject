@@ -21,6 +21,12 @@ public class MainDisplay {
     int loadMethod;
     String[] loadActions = MainEvents.defaultActions();
 
+    /**
+     * Automation console for a collection of CDs
+     * @param cds An array of CDs
+     * @param section Section the CDs belong to
+     * @param method Method to auto select
+     */
     public MainDisplay(CD[] cds, String section, int method) {
         this.loadCDs = cds;
         this.loadSection = section;
@@ -29,6 +35,11 @@ public class MainDisplay {
         CreateDisplay();
     }
 
+    /**
+     * Automation console for a single CD
+     * @param cd Single to load
+     * @param method Method to auto select
+     */
     public MainDisplay(CD cd, int method) {
         this.loadCDs = new CD[]{cd};
         this.loadSection = cd.getSection();
@@ -36,6 +47,9 @@ public class MainDisplay {
         CreateDisplay();
     }
 
+    /**
+     * Creates the display
+     */
     private void CreateDisplay() {
         frame = new JFrame("Automation Console");
         frame.setMinimumSize(new Dimension(800, 500));
@@ -52,8 +66,12 @@ public class MainDisplay {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        events.Connect();
     }
 
+    /**
+     * Creates and loads the interface
+     */
     private void CreateInterface() {
         components.getConstraints().insets = new Insets(5, 5, 5, 5);
         Footer();
@@ -71,6 +89,11 @@ public class MainDisplay {
         TablePanel();
     }
 
+    /**
+     * Loads the Footer of the interface
+     * Components:
+     * Exit Button
+     */
     private void Footer() {
         //region Create Components
 
@@ -102,6 +125,17 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Loads the Top Level Panel of the interface
+     * Panel Components:
+     * Action Label
+     * Action Combobox
+     * Process Button
+     * Barcode Label
+     * Barcode Field
+     * Section Label
+     * Section Field
+     */
     private void TopLevelPanel() {
         //region Create Panel
 
@@ -183,6 +217,12 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Loads the Table Panel of the interface
+     * Panel Components:
+     * Title Label
+     * CD Table
+     */
     private void TablePanel() {
         //region Create Panel
 

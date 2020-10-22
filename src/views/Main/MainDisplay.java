@@ -28,6 +28,9 @@ public class MainDisplay {
     ComponentsManager components;
     JList processHistory;
 
+    /**
+     * Creates the Display on screen
+     */
     public MainDisplay() {
         frame = new JFrame("Archive Console");
         frame.setMinimumSize(new Dimension(1000, 600));
@@ -46,8 +49,13 @@ public class MainDisplay {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        events.ProcessLog();
+        events.Connect();
     }
 
+    /**
+     * Creates the interface on the display
+     */
     private void CreateInterface() {
         // Add padding to left outside panels
         components.getConstraints().insets = new Insets(0, 5, 5, 5);
@@ -72,6 +80,11 @@ public class MainDisplay {
 
     //region Frame Components
 
+    /**
+     * Draw the Footer Panel on the interface
+     * Panel Components:
+     * Exit Button
+     */
     private void Footer() {
         //region Create Panel
 
@@ -123,6 +136,13 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Search String Panel on the interface
+     * Panel Components
+     * Search Label
+     * Search Field
+     * Search Button
+     */
     private void SearchString() {
         //region Create Panel
 
@@ -180,6 +200,12 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Table Buttons Panel on the interface
+     * Panel Components
+     * Load Button
+     * Save Button
+     */
     private void TableButtons() {
         //region Create Panel
 
@@ -242,6 +268,14 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Archive CDs Panel on the interface
+     * Panel Components:
+     * Title Label
+     * CD Table
+     * Sort Label
+     * Sort Buttons
+     */
     private void ArchiveCDs() {
         //region Create Panel
 
@@ -405,6 +439,15 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Process Log Panel on the interface
+     * Panel Components
+     * Title Label
+     * Process Button
+     * Data List
+     * Binary Tree Buttons
+     * HashMap Buttons
+     */
     private void ProcessLog() {
         //region Create Panel
 
@@ -589,6 +632,14 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Manage CD Panel on the interface
+     * Panel Components
+     * CD Labels
+     * CD Fields
+     * New Button
+     * Save Button
+     */
     private void ManageCD() {
         //region Create Panel
 
@@ -773,6 +824,14 @@ public class MainDisplay {
         //endregion
     }
 
+    /**
+     * Draw the Automation Panel on the interface
+     * Panel Components
+     * Single CD Label
+     * Single CD Buttons
+     * Multiple CDs Labels
+     * Multiple CDs Buttons
+     */
     private void Automation() {
         //region Create Panel
 
